@@ -7,6 +7,7 @@ class ResumeModelSerializer(serializers.ModelSerializer):
     """
     Сериализатор Resume
     """
+
     class Meta:
         model = Resume
         fields = (
@@ -22,4 +23,3 @@ class ResumeModelSerializer(serializers.ModelSerializer):
             'phone',
             'email',
         )
-

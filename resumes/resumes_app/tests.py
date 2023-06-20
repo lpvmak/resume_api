@@ -171,7 +171,6 @@ class ResumeGetPatchTests(APITestCase):
             response.status_code, 400,
         )
 
-
     def test_anon_patch_resume(self):
         """
         Тест неавторизованный пользователь пытается изменить резюме
