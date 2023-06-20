@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: PG_USER
+      POSTGRES_PASSWORD: PG_PASS
+      POSTGRES_DB: RESUME_DB
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app:
+    depends_on:
+      - db
+    build:
+      context: resumes
+    image: resumes-app
+    volumes:
+      - static_files:/static
+    environment:
+      DATABASE_URL: "postgres://PG_USER:PG_PASS@db/RESUME_DB"
+
+  app_test:
+    depends_on:
+      - db
+    image: resumes-app
+    entrypoint: "./entrypoint_test.sh"
+    environment:
+      DATABASE_URL: "postgres://PG_USER:PG_PASS@db/RESUME_DB"
+
+  nginx:
+    depends_on:
+      - app
+    build:
+      context: nginx
+    volumes:
+      - static_files:/var/www/static
+    ports:
+      - 80:80
+
+volumes:
+  static_files:
+  postgres_data:
